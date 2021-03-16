@@ -34,8 +34,8 @@
     ```
     * install yaml을 다운로드한다.
     ```bash
-    wget https://raw.githubusercontent.com/tmax-cloud/install-ingress/4.1/manifest/system.yaml
-    wget https://raw.githubusercontent.com/tmax-cloud/install-ingress/4.1/manifest/shared.yaml
+    wget https://raw.githubusercontent.com/tmax-cloud/install-ingress/5.0/manifest/system.yaml
+    wget https://raw.githubusercontent.com/tmax-cloud/install-ingress/5.0/manifest/shared.yaml
     ```
   
 2. 위의 과정에서 생성한 tar 파일들을 폐쇄망 환경으로 이동시킨 뒤 사용하려는 registry에 이미지를 push한다.
