@@ -5,8 +5,12 @@ install_dir=$(dirname "$0")
 yaml_dir="${install_dir}/yaml"
 
 function set_env(){
-    if [[ -z ${IMAGE_REGISTRY} ]]; then
-        IMAGE_REGISTRY=quay.io
+    if [[ -z ${NGINX_INGRESS_CONTROLLER_IMAGE} ]]; then
+        NGINX_INGRESS_CONTROLLER_IMAGE=quay.io/kubernetes-ingress-controller/nginx-ingress-controller
+    fi
+
+    if [[ -z ${KUBE_WEBHOOK_CERTGEN_IMAGE} ]]; then
+        KUBE_WEBHOOK_CERTGEN_IMAGE=docker.io/jettech/kube-webhook-certgen
     fi
 
     if [[ -z ${NGINX_INGRESS_VERSION} ]]; then
@@ -17,8 +21,11 @@ function set_env(){
         KUBE_WEBHOOK_CERTGEN_VERSION=v1.2.2
     fi
 
-    sed -i "s|{IMAGE_REGISTRY}|${IMAGE_REGISTRY}|g" ${yaml_dir}/system.yaml
-    sed -i "s|{IMAGE_REGISTRY}|${IMAGE_REGISTRY}|g" ${yaml_dir}/shared.yaml
+    sed -i "s|quay.io/kubernetes-ingress-controller/nginx-ingress-controller|${NGINX_INGRESS_CONTROLLER_IMAGE}|g" ${yaml_dir}/system.yaml
+    sed -i "s|quay.io/kubernetes-ingress-controller/nginx-ingress-controller|${NGINX_INGRESS_CONTROLLER_IMAGE}|g" ${yaml_dir}/shared.yaml
+
+    sed -i "s|docker.io/jettech/kube-webhook-certgen|${KUBE_WEBHOOK_CERTGEN_IMAGE}|g" ${yaml_dir}/system.yaml
+    sed -i "s|docker.io/jettech/kube-webhook-certgen|${KUBE_WEBHOOK_CERTGEN_IMAGE}|g" ${yaml_dir}/shared.yaml
 
     sed -i "s|{nginx_ingress_version}|${NGINX_INGRESS_VERSION}|g" ${yaml_dir}/system.yaml
     sed -i "s|{nginx_ingress_version}|${NGINX_INGRESS_VERSION}|g" ${yaml_dir}/shared.yaml
