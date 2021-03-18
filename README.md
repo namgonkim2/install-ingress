@@ -34,8 +34,8 @@
     ```
     * install yaml을 다운로드한다.
     ```bash
-    wget https://raw.githubusercontent.com/tmax-cloud/install-ingress/4.1/manifest/system.yaml
-    wget https://raw.githubusercontent.com/tmax-cloud/install-ingress/4.1/manifest/shared.yaml
+    wget https://raw.githubusercontent.com/tmax-cloud/install-ingress/5.0/manifest/yaml/system.yaml
+    wget https://raw.githubusercontent.com/tmax-cloud/install-ingress/5.0/manifest/yaml/shared.yaml
     ```
   
 2. 위의 과정에서 생성한 tar 파일들을 폐쇄망 환경으로 이동시킨 뒤 사용하려는 registry에 이미지를 push한다.
@@ -69,16 +69,15 @@
 	```bash
     export NGINX_INGRESS_VERSION=0.33.0
     export KUBE_WEBHOOK_CERTGEN_VERSION=v1.2.2
+    export INGRESS_NGINX_NAME=ingress-nginx-system
 	
+    sed -i 's/ingress-nginx/'${INGRESS_NGINX_NAME}'/g' system.yaml
 	sed -i 's/{nginx_ingress_version}/'${NGINX_INGRESS_VERSION}'/g' system.yaml
 	sed -i 's/{kube_webhook_certgen_version}/'${KUBE_WEBHOOK_CERTGEN_VERSION}'/g' system.yaml
 	
 	export INGRESS_NGINX_NAME=ingress-nginx-shared
-	export INGRESS_CLASS=nginx-shd
 	
 	sed -i 's/ingress-nginx/'${INGRESS_NGINX_NAME}'/g' shared.yaml
-	sed -i 's/--ingress-class=nginx/--ingress-class='${INGRESS_CLASS}'/g' shared.yaml
-	sed -i 's/ingress-controller-leader-nginx/ingress-controller-leader-'${INGRESS_CLASS}'/g' shared.yaml
 	sed -i 's/{nginx_ingress_version}/'${NGINX_INGRESS_VERSION}'/g' shared.yaml
 	sed -i 's/{kube_webhook_certgen_version}/'${KUBE_WEBHOOK_CERTGEN_VERSION}'/g' shared.yaml
 	```
@@ -88,11 +87,11 @@
 	# 폐쇄망 Registry 주소 입력(예:192.168.6.150:5000)
     export REGISTRY=<REGISTRY_IP_PORT>
 	
-	sed -i 's/quay.io\/kubernetes-ingress-controller\/nginx-ingress-controller/'${REGISTRY}'\/kubernetes-ingress-controller\/nginx-ingress-controller/g' deploy.yaml
-	sed -i 's/docker.io\/jettech\/kube-webhook-certgen/'${REGISTRY}'\/jettech\/kube-webhook-certgen/g' deploy.yaml
+	sed -i 's/quay.io\/kubernetes-ingress-controller\/nginx-ingress-controller/'${REGISTRY}'\/kubernetes-ingress-controller\/nginx-ingress-controller/g' system.yaml
+	sed -i 's/docker.io\/jettech\/kube-webhook-certgen/'${REGISTRY}'\/jettech\/kube-webhook-certgen/g' system.yaml
 	
-	sed -i 's/quay.io\/kubernetes-ingress-controller\/nginx-ingress-controller/'${REGISTRY}'\/kubernetes-ingress-controller\/nginx-ingress-controller/g' deploy.yaml
-	sed -i 's/docker.io\/jettech\/kube-webhook-certgen/'${REGISTRY}'\/jettech\/kube-webhook-certgen/g' deploy.yaml
+	sed -i 's/quay.io\/kubernetes-ingress-controller\/nginx-ingress-controller/'${REGISTRY}'\/kubernetes-ingress-controller\/nginx-ingress-controller/g' shared.yaml
+	sed -i 's/docker.io\/jettech\/kube-webhook-certgen/'${REGISTRY}'\/jettech\/kube-webhook-certgen/g' shared.yaml
 	```
 
 ## Step 1. System Nginx Ingress Controller 배포
