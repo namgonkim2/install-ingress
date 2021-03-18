@@ -199,7 +199,7 @@ rules:
     resources:
       - configmaps
     resourceNames:
-      - ingress-controller-leader-nginx
+      - ingress-controller-leader-nginx-shd
     verbs:
       - get
       - update
@@ -332,7 +332,7 @@ spec:
       dnsPolicy: ClusterFirst
       containers:
         - name: controller
-          image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:{nginx_ingress_version}
+          image: {IMAGE_REGISTRY}/kubernetes-ingress-controller/nginx-ingress-controller:{nginx_ingress_version}
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
@@ -343,7 +343,7 @@ spec:
             - /nginx-ingress-controller
             - --publish-service=ingress-nginx/ingress-nginx-controller
             - --election-id=ingress-controller-leader
-            - --ingress-class=nginx
+            - --ingress-class=nginx-shd
             - --configmap=ingress-nginx/ingress-nginx-controller
             - --validating-webhook=:8443
             - --validating-webhook-certificate=/usr/local/certificates/cert
