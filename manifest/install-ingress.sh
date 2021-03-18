@@ -36,13 +36,13 @@ function set_env(){
 
 function install_system(){
     INGRESS_NGINX_NAME=ingress-nginx-system
-    sed -i "s|{ingress-nginx}|${INGRESS_NGINX_NAME}|g" ${yaml_dir}/system.yaml
+    sed -i "s|ingress-nginx|${INGRESS_NGINX_NAME}|g" ${yaml_dir}/system.yaml
     kubectl apply -f ${yaml_dir}/system.yaml
 }
 
 function install_shared(){
     INGRESS_NGINX_NAME=ingress-nginx-shd
-    sed -i "s|{ingress-nginx}|${INGRESS_NGINX_NAME}|g" ${yaml_dir}/shared.yaml
+    sed -i "s|ingress-nginx|${INGRESS_NGINX_NAME}|g" ${yaml_dir}/shared.yaml
     kubectl apply -f ${yaml_dir}/shared.yaml
 }
 
