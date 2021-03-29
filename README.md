@@ -114,14 +114,14 @@
         - ingress에 정의한 host주소로 연결이 안됨
         - 아래의 명령어로 ingress controller의 로그를 확인했을 때 `fork() failed` 와 같은 문구가 반복적으로 보이면서 정상 동작하지 못하는 경우(cpu의 수가 너무 많아서 발생할 수 있음)
         ```bash
-        kubectl logs $(kubectl get pods -n ingress-nginx | grep ingress-nginx-controller | awk '{ print $1 }') -n ingress-nginx
+        kubectl logs $(kubectl get pods -n ingress-nginx-system | grep ingress-nginx-system-controller | awk '{ print $1 }') -n ingress-nginx-system
         ```
     * 해결: worker process의 수 조절 (아래의 명령어 실행하여 process의 수 조절 및 controller pod)
         ```bash
         export PROCESS_NUMS="4"
-        sed -i 's/# worker-processes: "4"/worker-processes: \"'${PROCESS_NUMS}'\"/g' shared.yaml
+        sed -i 's/# worker-processes: "4"/worker-processes: \"'${PROCESS_NUMS}'\"/g' system.yaml
         kubectl apply -f system.yaml
-        kubectl delete pod $(kubectl get pods -n ingress-nginx | grep ingress-nginx-controller | awk '{ print $1 }') -n ingress-nginx
+        kubectl delete pod $(kubectl get pods -n ingress-nginx-system | grep ingress-nginx-system-controller | awk '{ print $1 }') -n ingress-nginx-system
         ```
 
 ## Step 2. Shared Nginx Ingress Controller 배포
