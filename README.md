@@ -11,50 +11,18 @@
 
 ## 폐쇄망 구축 가이드
 설치를 진행하기 전 아래의 과정을 통해 필요한 이미지 및 yaml 파일을 준비한다.
-1. **폐쇄망에서 설치하는 경우** 사용하는 image repository에 istio 설치 시 필요한 이미지를 push한다. 
-
-    * 작업 디렉토리 생성 및 환경 설정
-    ```bash
-    mkdir -p ~/install-ingress-nginx-system
-    export NGINX_INGRESS_HOME=~/install-ingress-nginx-system
-    export NGINX_INGRESS_VERSION=0.33.0
-    export KUBE_WEBHOOK_CERTGEN_VERSION=v1.2.2
-    
-    # image를 push할 폐쇄망 Registry 주소 입력(예:192.168.6.150:5000)
-    export REGISTRY=<REGISTRY_IP_PORT>
-    
-    cd $NGINX_INGRESS_HOME
-    ```
-    * 외부 네트워크 통신이 가능한 환경에서 필요한 이미지를 다운받는다.
-    ```bash
-    sudo docker pull quay.io/kubernetes-ingress-controller/nginx-ingress-controller:${NGINX_INGRESS_VERSION}
-    sudo docker save quay.io/kubernetes-ingress-controller/nginx-ingress-controller:${NGINX_INGRESS_VERSION} > ingress-nginx_${NGINX_INGRESS_VERSION}.tar
-    sudo docker pull jettech/kube-webhook-certgen:${KUBE_WEBHOOK_CERTGEN_VERSION}
-    sudo docker save jettech/kube-webhook-certgen:${KUBE_WEBHOOK_CERTGEN_VERSION} > kube-webhook-certgen_${KUBE_WEBHOOK_CERTGEN_VERSION}.tar
-    ```
-    * install yaml을 다운로드한다.
+1. **폐쇄망에서 설치하는 경우** 사용하는 image repository에 istio 설치 시 필요한 이미지를 push한다.
+   * [install-registry 이미지 푸시하기 참조](https://github.com/tmax-cloud/install-registry/blob/5.0/podman.md)
+2. install yaml을 다운로드한다.
     ```bash
     wget https://raw.githubusercontent.com/tmax-cloud/install-ingress/5.0/manifest/yaml/system.yaml
     wget https://raw.githubusercontent.com/tmax-cloud/install-ingress/5.0/manifest/yaml/shared.yaml
     ```
-  
-2. 위의 과정에서 생성한 tar 파일들을 폐쇄망 환경으로 이동시킨 뒤 사용하려는 registry에 이미지를 push한다.
-    ```bash
-    sudo docker load < ingress-nginx_${NGINX_INGRESS_VERSION}.tar
-    sudo docker load < kube-webhook-certgen_${KUBE_WEBHOOK_CERTGEN_VERSION}.tar
-    
-    sudo docker tag quay.io/kubernetes-ingress-controller/nginx-ingress-controller:${NGINX_INGRESS_VERSION} ${REGISTRY}/kubernetes-ingress-controller/nginx-ingress-controller:${NGINX_INGRESS_VERSION}
-    sudo docker tag jettech/kube-webhook-certgen:${KUBE_WEBHOOK_CERTGEN_VERSION} ${REGISTRY}/jettech/kube-webhook-certgen:${KUBE_WEBHOOK_CERTGEN_VERSION}
-    
-    sudo docker push ${REGISTRY}/kubernetes-ingress-controller/nginx-ingress-controller:${NGINX_INGRESS_VERSION}
-    sudo docker push ${REGISTRY}/jettech/kube-webhook-certgen:${KUBE_WEBHOOK_CERTGEN_VERSION}
-    ```
-
 
 ## 설치 가이드
 0. [system yaml, shared yaml 수정](#step0-deploy-yaml-%EC%88%98%EC%A0%95)
 1. [System Nginx Ingress Controller 배포](#step-1-system-nginx-ingress-controller-%EB%B0%B0%ED%8F%AC)
-1. [Shared Nginx Ingress Controller 배포](#step-2-shared-nginx-ingress-controller-%EB%B0%B0%ED%8F%AC)
+2. [Shared Nginx Ingress Controller 배포](#step-2-shared-nginx-ingress-controller-%EB%B0%B0%ED%8F%AC)
 
 
 ## Step 0. system yaml, shared yaml 수정
