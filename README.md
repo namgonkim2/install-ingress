@@ -11,7 +11,7 @@
 
 ## 폐쇄망 구축 가이드
 설치를 진행하기 전 아래의 과정을 통해 필요한 이미지 및 yaml 파일을 준비한다.
-1. **폐쇄망에서 설치하는 경우** 사용하는 image repository에 istio 설치 시 필요한 이미지를 push한다.
+1. **폐쇄망에서 설치하는 경우** 사용하는 image repository에 ingress-controller 설치 시 필요한 이미지를 push한다.
    * [install-registry 이미지 푸시하기 참조](https://github.com/tmax-cloud/install-registry/blob/5.0/podman.md)
 2. install yaml을 다운로드한다.
     ```bash
