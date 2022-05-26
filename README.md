@@ -3,7 +3,13 @@
 
 # Nginx Ingress Controller 설치 가이드
 
+## 개요
+
+- 인그레스 오브젝트의 기능(e.g. 각 모듈에 접근하기 위한 라우팅 규칙 설정, IP에 대해 상이한 도메인 이름으로 처리, SSL/TLS 인증 등)을 사용하기 위해 배포한다.
+- 쿠버네티스 API서버를 통해 Ingress 리소스의 변화를 추적하고 그에 맞게 L7 로드밸런서를 설정하는 역할을 한다.
+
 ## 구성 요소 및 버전
+
 * nginx-ingress-controller ([quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.33.0](https://quay.io/repository/kubernetes-ingress-controller/nginx-ingress-controller?tab=tags))
 * kube-webhook-certgen ([docker.io/jettech/kube-webhook-certgen:v1.2.2](https://hub.docker.com/layers/jettech/kube-webhook-certgen/v1.2.2/images/sha256-4ecb4e11ce3b77a6ca002eeb88d58652d0a199cc802a0aae2128c760300ed4de?context=explore))
 
