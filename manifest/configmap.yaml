@@ -11,3 +11,16 @@ metadata:
     app.kubernetes.io/version: 1.5.1
   name: ingress-nginx-controller
   namespace: ingress-nginx
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tcp-services
+  namespace: ingress-nginx-system
+  labels:
+    app.kubernetes.io/name: ingress-nginx-system
+    app.kubernetes.io/part-of: ingress-nginx-system
+data:
+  9001: "hyperauth/kafka-1:9093"
+  9002: "hyperauth/kafka-2:9093"
+  9003: "hyperauth/kafka-3:9093"
