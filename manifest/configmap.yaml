@@ -5,21 +5,21 @@ kind: ConfigMap
 metadata:
   labels:
     app.kubernetes.io/component: controller
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/instance: ingress-nginx-system
+    app.kubernetes.io/name: ingress-nginx-system
+    app.kubernetes.io/part-of: ingress-nginx-system
     app.kubernetes.io/version: 1.5.1
-  name: ingress-nginx-controller
-  namespace: ingress-nginx
+  name: ingress-nginx-system-controller
+  namespace: ingress-nginx-system
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: tcp-services
-  namespace: ingress-nginx
+  namespace: ingress-nginx-system
   labels:
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/name: ingress-nginx-system
+    app.kubernetes.io/part-of: ingress-nginx-system
 data:
   9001: "hyperauth/kafka-1:9093"
   9002: "hyperauth/kafka-2:9093"

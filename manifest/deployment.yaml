@@ -3,35 +3,35 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: controller
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/instance: ingress-nginx-system
+    app.kubernetes.io/name: ingress-nginx-system
+    app.kubernetes.io/part-of: ingress-nginx-system
     app.kubernetes.io/version: 1.5.1
-  name: ingress-nginx-controller
-  namespace: ingress-nginx
+  name: ingress-nginx-system-controller
+  namespace: ingress-nginx-system
 spec:
   minReadySeconds: 0
   revisionHistoryLimit: 10
   selector:
     matchLabels:
       app.kubernetes.io/component: controller
-      app.kubernetes.io/instance: ingress-nginx
-      app.kubernetes.io/name: ingress-nginx
+      app.kubernetes.io/instance: ingress-nginx-system
+      app.kubernetes.io/name: ingress-nginx-system
   template:
     metadata:
       labels:
         app.kubernetes.io/component: controller
-        app.kubernetes.io/instance: ingress-nginx
-        app.kubernetes.io/name: ingress-nginx
+        app.kubernetes.io/instance: ingress-nginx-system
+        app.kubernetes.io/name: ingress-nginx-system
     spec:
       containers:
       - args:
         - /nginx-ingress-controller
-        - --publish-service=$(POD_NAMESPACE)/ingress-nginx-controller
-        - --election-id=ingress-nginx-leader
-        - --controller-class=k8s.io/ingress-nginx
-        - --ingress-class=nginx
-        - --configmap=$(POD_NAMESPACE)/ingress-nginx-controller
+        - --publish-service=$(POD_NAMESPACE)/ingress-nginx-system-controller
+        - --election-id=ingress-nginx-system-leader
+        - --controller-class=k8s.io/ingress-nginx-system
+        - --ingress-class=nginx-system
+        - --configmap=$(POD_NAMESPACE)/ingress-nginx-system-controller
         - --validating-webhook=:8443
         - --validating-webhook-certificate=/usr/local/certificates/cert
         - --validating-webhook-key=/usr/local/certificates/key
@@ -103,9 +103,9 @@ spec:
       dnsPolicy: ClusterFirst
       nodeSelector:
         kubernetes.io/os: linux
-      serviceAccountName: ingress-nginx
+      serviceAccountName: ingress-nginx-system
       terminationGracePeriodSeconds: 300
       volumes:
       - name: webhook-cert
         secret:
-          secretName: ingress-nginx-admission
+          secretName: ingress-nginx-system-admission

@@ -3,30 +3,30 @@ kind: Job
 metadata:
   labels:
     app.kubernetes.io/component: admission-webhook
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/instance: ingress-nginx-system
+    app.kubernetes.io/name: ingress-nginx-system
+    app.kubernetes.io/part-of: ingress-nginx-system
     app.kubernetes.io/version: 1.5.1
-  name: ingress-nginx-admission-patch
-  namespace: ingress-nginx
+  name: ingress-nginx-system-admission-patch
+  namespace: ingress-nginx-system
 spec:
   template:
     metadata:
       labels:
         app.kubernetes.io/component: admission-webhook
-        app.kubernetes.io/instance: ingress-nginx
-        app.kubernetes.io/name: ingress-nginx
-        app.kubernetes.io/part-of: ingress-nginx
+        app.kubernetes.io/instance: ingress-nginx-system
+        app.kubernetes.io/name: ingress-nginx-system
+        app.kubernetes.io/part-of: ingress-nginx-system
         app.kubernetes.io/version: 1.5.1
-      name: ingress-nginx-admission-patch
+      name: ingress-nginx-system-admission-patch
     spec:
       containers:
       - args:
         - patch
-        - --webhook-name=ingress-nginx-admission
+        - --webhook-name=ingress-nginx-system-admission
         - --namespace=$(POD_NAMESPACE)
         - --patch-mutating=false
-        - --secret-name=ingress-nginx-admission
+        - --secret-name=ingress-nginx-system-admission
         - --patch-failure-policy=Fail
         env:
         - name: POD_NAMESPACE
@@ -45,36 +45,36 @@ spec:
         fsGroup: 2000
         runAsNonRoot: true
         runAsUser: 2000
-      serviceAccountName: ingress-nginx-admission
+      serviceAccountName: ingress-nginx-system-admission
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
   labels:
     app.kubernetes.io/component: admission-webhook
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/instance: ingress-nginx-system
+    app.kubernetes.io/name: ingress-nginx-system
+    app.kubernetes.io/part-of: ingress-nginx-system
     app.kubernetes.io/version: 1.5.1
-  name: ingress-nginx-admission-create
-  namespace: ingress-nginx
+  name: ingress-nginx-system-admission-create
+  namespace: ingress-nginx-system
 spec:
   template:
     metadata:
       labels:
         app.kubernetes.io/component: admission-webhook
-        app.kubernetes.io/instance: ingress-nginx
-        app.kubernetes.io/name: ingress-nginx
-        app.kubernetes.io/part-of: ingress-nginx
+        app.kubernetes.io/instance: ingress-nginx-system
+        app.kubernetes.io/name: ingress-nginx-system
+        app.kubernetes.io/part-of: ingress-nginx-system
         app.kubernetes.io/version: 1.5.1
-      name: ingress-nginx-admission-create
+      name: ingress-nginx-system-admission-create
     spec:
       containers:
       - args:
         - create
-        - --host=ingress-nginx-controller-admission,ingress-nginx-controller-admission.$(POD_NAMESPACE).svc
+        - --host=ingress-nginx-system-controller-admission,ingress-nginx-system-controller-admission.$(POD_NAMESPACE).svc
         - --namespace=$(POD_NAMESPACE)
-        - --secret-name=ingress-nginx-admission
+        - --secret-name=ingress-nginx-system-admission
         env:
         - name: POD_NAMESPACE
           valueFrom:
@@ -92,4 +92,4 @@ spec:
         fsGroup: 2000
         runAsNonRoot: true
         runAsUser: 2000
-      serviceAccountName: ingress-nginx-admission
+      serviceAccountName: ingress-nginx-system-admission
